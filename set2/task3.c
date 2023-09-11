@@ -5,9 +5,27 @@ int main() {
     double zero = 0;
     double positive = 0;
 
-    
+    int n;
+    scanf("%d", &n);
 
-    printf ( "%0.5lf %0.5ln %0.5ln\n" , negative, zero, positive);
+    for (int i=0; i<n; i++) {
+        int num;
+        scanf("%d", &num);
+        if (num > 0) {
+            positive++;
+        } else if (num < 0) {
+            negative++;
+        } else {
+            zero++;
+        }
+    }    
+
+    double s = negative + zero + positive;
+    negative /= s;
+    zero /= s;
+    positive /= s;
+
+    printf ("%0.5lf %0.5lf %0.5lf\n", negative, zero, positive);
 
     return 0;
 }
