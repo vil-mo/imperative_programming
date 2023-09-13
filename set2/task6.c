@@ -5,8 +5,12 @@ void main() {
     int n;
     scanf("%d", &n);
     
+    char trash;
+    scanf("%c", &trash);
+
     int bytes_amount = ceil(n / 8.0);
     int byte_size = 256;
+
 
 
     for (int i = 1; i <= bytes_amount; i++) {
