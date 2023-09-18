@@ -15,7 +15,7 @@ void main() {
 
     for (int i = 1; i <= bytes_amount; i++) {
         if (i == bytes_amount) {
-            byte_size = 2^(n % 8);
+            byte_size = pow(2, n % 8);
             if (byte_size == 1) {
                 byte_size = 256;
             }
@@ -30,7 +30,7 @@ void main() {
 
             current_number += int_current_bit * j;
         }
-        printf("%d", current_number);
+        printf("%d ", current_number);
     }
 
 }

@@ -12,7 +12,7 @@ int date_to_int(int date[3]) {
     res -= date[2] / 100;
     res += date[2] / 4;
     
-    int is_leap_year = (date[2] % 400 == 0) || (date[2] % 4 == 0 && date[2] % 100 != 0);
+    //int is_leap_year = (date[2] % 400 == 0) || (date[2] % 4 == 0 && date[2] % 100 != 0);
 
     res += days_since_start_of_the_year[date[1] - 1];
     res += date[0];
@@ -20,9 +20,11 @@ int date_to_int(int date[3]) {
     return res;
 }
 
+
+
 int* int_to_date(int num) {
-    int date[3] = {0, 0, 0};
-2
+    static int date[3] = {0, 0, 0};
+
     date[2] = num / 365;
     int days_since_start_of_the_current_year = num % 365;
     int month = 0;
@@ -33,8 +35,29 @@ int* int_to_date(int num) {
 
     date[0] = days_since_start_of_the_current_year % days_since_start_of_the_year[month - 1];
 
+    int leap_years_amount = date[2] / 4;
+    leap_years_amount -= date[2] / 100;
+    leap_years_amount += date[2] / 400;
 
-    return date[2], date[1], date[0];
+    date[0] -= leap_years_amount;
+    while (date[0] <= 0) {
+        date[1] -= 1;
+        if (date[1] == 0) {
+            date[1] = 12;
+            date[2] -= 1;
+        }
+
+        if (date[1] > 2 && ((date[2] % 4 == 0 && date[2] % 100 != 0) || (date[2] % 400 == 0))) {
+            date[0] -= 5;
+        }
+        
+
+        int days_in_this_month = days_in_month[date[1] - 1];
+
+        date[0] = days_in_this_month + date[0];
+    }
+
+    return date;
 }
 
 void main() {
@@ -44,8 +67,13 @@ void main() {
 
     int this_date_to_int = date_to_int(date);
 
-    int new_date[3]; memcpy(int_to_date(this_date_to_int), new_date, 3);
 
-    printf("%d %d %d\n", new_date[0], new_date[1], new_date[3]);
+
+    int *new_date_pointer;
+    new_date_pointer = int_to_date(this_date_to_int);
+
+
+
+    printf("%d %d %d\n", *new_date_pointer, *(new_date_pointer + 1), *(new_date_pointer + 2));
 
 }
