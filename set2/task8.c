@@ -42,14 +42,14 @@ int* int_to_date(int num) {
     date[0] -= leap_years_amount;
     while (date[0] <= 0) {
         date[1] -= 1;
-        if (date[1] == 0) {
-            date[1] = 12;
-            date[2] -= 1;
-        }
+        // if (date[1] == 0) {
+        //     date[1] = 12;
+        //     date[2] -= 1;
+        // }
 
-        if (date[1] > 2 && ((date[2] % 4 == 0 && date[2] % 100 != 0) || (date[2] % 400 == 0))) {
-            date[0] -= 5;
-        }
+        // if (date[1] > 2 && ((date[2] % 4 == 0 && date[2] % 100 != 0) || (date[2] % 400 == 0))) {
+        //     date[0] -= 5;
+        // }
         
 
         int days_in_this_month = days_in_month[date[1] - 1];
