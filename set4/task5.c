@@ -83,5 +83,7 @@ int main() {
         printf("\n");
     }
 
+    free(splitted_info);
+
     return 0;
 }
