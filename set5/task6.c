@@ -20,45 +20,42 @@ LongNum newLongNum(int from) {
     return num;
 }
 
-void addLongNums(LongNum a, LongNum b, LongNum *result) {
-    
+
+void printLongNum(LongNum *num) {
+    for (int i = num->len - 1; i >= 0; i--) {
+        printf("%d", num->arr[i]);
+    }
+}
+
+void normalizeLongNum(LongNum *long_num) {
     int remember = 0;
-    
-    for (result->len = 0; result->len < a.len || result->len < b.len; (result->len)++) {
-        int num = remember;
-        if (result->len < a.len) {
-            num += a.arr[result->len];
-        }
-        if (result->len < b.len) {
-            num += b.arr[result->len];
-        }
-        remember = num / 10;
-        result->arr[result->len] = num % 10;
+
+    for (int i = 0; i < long_num->len; i++) {
+        remember += long_num->arr[i];
+        long_num->arr[i] = remember % 10;
+        remember /= 10;
     }
 
-    
     while (remember > 0) {
-        result->arr[result->len] = remember % 10;
+        long_num->arr[long_num->len] = remember % 10;
         remember = remember / 10;
-        result->len++;
+        long_num->len++;
     }
 }
 
-void multiplyLongNumAndInt(int a, LongNum b, LongNum *result) {
-    LongNum res = newLongNum(0);
-    res.len = b.len;
-    for (int i = 0; i < b.len; i++) {
-        res.arr[i] = a * b.arr[i];
+void multiplyLongNumAndInt(int a, LongNum *b, LongNum *result) {
+    *result = newLongNum(0);
+    result->len = b->len;
+    for (int i = 0; i < b->len; i++) {
+        result->arr[i] = a * b->arr[i];
     }
 
-    addLongNums(res, newLongNum(0), result);
+    normalizeLongNum(result);
 }
 
-void printLongNum(LongNum num) {
-    for (int i = num.len - 1; i >= 0; i--) {
-        printf("%d", num.arr[i]);
-    }
-}
+
+
+
 
 
 int main() {
@@ -70,12 +67,12 @@ int main() {
 
 
     for (int i = 2; i <= n; i++) {
-        multiplyLongNumAndInt(i, a, &res);
+        multiplyLongNumAndInt(i, &a, &res);
         a = res;
     }
 
 
-    printLongNum(a);
+    printLongNum(&a);
     printf("\n");
 
     return 0;

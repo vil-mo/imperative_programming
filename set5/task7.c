@@ -45,28 +45,28 @@ void scanLongNum(LongNum *long_num) {
     }
 }
 
-void printLongNum(LongNum num) {
-    for (int i = num.len - 1; i >= 0; i--) {
-        printf("%d", num.arr[i]);
+void printLongNum(LongNum *num) {
+    for (int i = num->len - 1; i >= 0; i--) {
+        printf("%d", num->arr[i]);
     }
 }
 
-void addLongNums(LongNum a, LongNum b, LongNum *result) {
+void addLongNums(LongNum *a, LongNum *b, LongNum *result) {
     int remember = 0;
     
-    for (result->len = 0; result->len < a.len || result->len < b.len; (result->len)++) {
+    for (result->len = 0; result->len < a->len || result->len < b->len; (result->len)++) {
         int num = remember;
-        if (result->len < a.len) {
-            num += a.arr[result->len];
+        if (result->len < a->len) {
+            num += a->arr[result->len];
         }
-        if (result->len < b.len) {
-            num += b.arr[result->len];
+        if (result->len < b->len) {
+            num += b->arr[result->len];
         }
         remember = num / 10;
         result->arr[result->len] = num % 10;
     }
 
-    
+
     while (remember > 0) {
         result->arr[result->len] = remember % 10;
         remember = remember / 10;
@@ -74,50 +74,63 @@ void addLongNums(LongNum a, LongNum b, LongNum *result) {
     }
 }
 
-void multiplyLongNumAndInt(int a, LongNum b, LongNum *result) {
-    LongNum res = newLongNum(0);
-    res.len = b.len;
-    for (int i = 0; i < b.len; i++) {
-        res.arr[i] = a * b.arr[i];
+void normalizeLongNum(LongNum *long_num) {
+    int remember = 0;
+
+    for (int i = 0; i < long_num->len; i++) {
+        remember += long_num->arr[i];
+        long_num->arr[i] = remember % 10;
+        remember /= 10;
     }
 
-    addLongNums(res, newLongNum(0), result);
+    while (remember > 0) {
+        long_num->arr[long_num->len] = remember % 10;
+        remember = remember / 10;
+        long_num->len++;
+    }
 }
 
-void multiplyLongNums(LongNum a, LongNum b, LongNum *result) {
-    if (a.len == 1 && a.arr[0] == 0) {
+void multiplyLongNumAndInt(int a, LongNum *b, LongNum *result) {
+    *result = newLongNum(0);
+    result->len = b->len;
+    for (int i = 0; i < b->len; i++) {
+        result->arr[i] = a * b->arr[i];
+    }
+
+    normalizeLongNum(result);
+}
+
+void multiplyLongNums(LongNum *a, LongNum *b, LongNum *result) {
+    if (a->len == 1 && a->arr[0] == 0) {
         *result = newLongNum(0);
         return;
     }
 
     LongNum res = newLongNum(0);
 
-    for (int i = a.len - 1; i >= 0; i--) {
+    for (int i = a->len - 1; i >= 0; i--) {
         LongNum c_res;
-        multiplyLongNumAndInt(10, res, &c_res);
+        multiplyLongNumAndInt(10, &res, &c_res);
         res = c_res;
-        multiplyLongNumAndInt(a.arr[i], b, &c_res);
+        multiplyLongNumAndInt(a->arr[i], b, &c_res);
         
-        addLongNums(res, c_res, result);
+        addLongNums(&res, &c_res, result);
         res = *result;
     }
 
-    addLongNums(res, newLongNum(0), result);
+    normalizeLongNum(result);
 }
 
 
-
-
 int main() {
-    
     LongNum a, b, res;
 
     scanLongNum(&a);
     scanLongNum(&b);
 
-    multiplyLongNums(a, b, &res);
+    multiplyLongNums(&a, &b, &res);
 
-    printLongNum(res);
+    printLongNum(&res);
 
     return 0;
 }
