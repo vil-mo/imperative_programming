@@ -11,19 +11,26 @@ int main() {
     int t;
     scanf("%d", &t);
 
+    Node arr[1000000];
+    
     for (int t_ind = 0; t_ind < t; t_ind++) {
         int n, first, last, q;
         scanf("%d %d %d %d", &n, &first, &last, &q);
+        n++;
 
-        Node arr[10000];
+        arr[0].next = first + 1;
+        arr[0].prev = last + 1;
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i < n; i++) {
             scanf("%d %d %d", &arr[i].val, &arr[i].next, &arr[i].prev);
+            arr[i].next++;
+            arr[i].prev++;
         }
 
         for (int i = 0; i < q; i++) {
             int command, index;
             scanf("%d %d", &command, &index);
+            index++;
 
             switch (command) {
                 case 0: {
@@ -33,48 +40,32 @@ int main() {
                     int prev = arr[index].prev;
                     arr[next].prev = prev;
                     arr[prev].next = next;
-
+                    
                     break;
                 }
                 case 1: {
                     scanf(" %d", &arr[n].val);
 
-                    if (index == -1) {
-                        arr[n].next = first;
-                        arr[n].prev = -1;
-                        first = n;
-                    } else {
-                        arr[n].next = arr[index].next;
-                        arr[n].prev = index;
+                    arr[n].next = arr[index].next;
+                    arr[n].prev = index;
+                    arr[arr[index].next].prev = n;    
+                    arr[index].next = n;
 
-                        arr[arr[index].next].prev = n;
-                        arr[index].next = n;
-                    }
-
-                    printf("%d\n", n);
+                    printf("%d\n", n - 1);
                     n++;
-
 
                     break;
                 }
                 case -1: {
                     scanf(" %d", &arr[n].val);
 
-                    if (index == -1) {
-                        arr[n].prev = last;
-                        arr[n].next = -1;
-                        last = n;
-                    } else {
-                        arr[n].next = index;
-                        arr[n].prev = arr[index].prev;
-
-                        arr[arr[index].prev].next = n;
-                        arr[index].prev = n;
-                    }
-
-                    printf("%d\n", n);
+                    arr[n].next = index;
+                    arr[n].prev = arr[index].prev;
+                    arr[arr[index].prev].next = n;
+                    arr[index].prev = n;
+                    
+                    printf("%d\n", n - 1);
                     n++;
-
 
                     break;
                 }
@@ -84,7 +75,7 @@ int main() {
         }
 
         printf("===\n");
-        for (int i = first; i > -1; i = arr[i].next) {
+        for (int i = arr[0].next; i != 0; i = arr[i].next) {
             printf("%d\n", arr[i].val);
         }
         printf("===\n");

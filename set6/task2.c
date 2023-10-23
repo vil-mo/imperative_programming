@@ -10,15 +10,13 @@ int main() {
     int t;
     scanf("%d", &t);
 
+    Node arr[100001];
+
     for (int t_ind = 0; t_ind < t; t_ind++) {
         int n, first, q;
         scanf("%d %d %d", &n, &first, &q);
 
-        Node arr[10000];
-
         for (int i = 0; i < n; i++) {
-            int next_ind;
-
             scanf("%s %d", &arr[i].val, &arr[i].next);
         }
 
@@ -43,6 +41,7 @@ int main() {
 
             } else {
                 if (index == -1) {
+                    printf("%s\n", arr[first].val);
                     first = arr[first].next;
                 } else {
                     printf("%s\n", arr[arr[index].next].val);

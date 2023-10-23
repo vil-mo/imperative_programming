@@ -5,32 +5,23 @@ char *strCreate() {
     int len;
     fscanf(stdin, " %d ", &len);
 
-    char* str = malloc(len * sizeof(char));
+    char* str = malloc((len + 1) * sizeof(char));
 
     for (int i = 0; i < len; i++) {
         fscanf(stdin, "%c", &str[i]);
     }
 
+    
+
+    str[len] = '\0';
+
     return str;
-}
-
-void strRemove(char* str) {
-    free(str);
-}
-
-void strPrint(char* str) {
-    for (int i = 0; i < sizeof(str) / sizeof(char); i++) {
-        if (str[i] == '\0') {
-            break;
-        }
-        fprintf(stdout, "%c", str[i]);
-    }
-    fprintf(stdout, "\n");
 }
 
 void strPrintAmountOf(char* str, char symb) {
     int am = 0;
-    for (int i = 0; i < sizeof(str) / sizeof(char); i++) {
+    for (int i = 0; 1; i++) {
+        if (str[i] == '\0') break;
         if (str[i] == symb) {
             am++;
         }
@@ -46,10 +37,18 @@ int main() {
     int n;
     fscanf(stdin, "%d", &n);
 
-    char* arr[n];
+    char* arr[1000000];
     int current_index = 0;
 
     for (int i = 0; i < n; i++) {
+
+        char symbol;
+        scanf("%c", &symbol);
+        while (symbol != '\n')
+        {
+            scanf("%c", &symbol);
+        }
+
         int command;
         fscanf(stdin, "%d", &command);
 
@@ -62,14 +61,14 @@ int main() {
             case 1: {
                 int ind;
                 fscanf(stdin, " %d", &ind);
-                strRemove(arr[ind]);
+                free(arr[ind]);
                 arr[ind] = NULL;
                 break;
             }
             case 2: {
                 int ind;
                 fscanf(stdin, " %d", &ind);
-                strPrint(arr[ind]);
+                fprintf(stdout, "%s\n", arr[ind]);
                 break;
             }
             case 3: {
@@ -85,11 +84,8 @@ int main() {
     }
 
     for (int i = 0; i < current_index; i++) {
-        if (arr[i] != NULL) {
-            free(arr[i]);
-        }
+        free(arr[i]);
     }
-
 
     fclose(stdin);
     fclose(stdout);

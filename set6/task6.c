@@ -12,11 +12,9 @@ void tokensSplit(Tokens *tokens, const char *str, const char *delims) {
     tokens->num = -1;
     int current_token_beggining_index = 0;
 
-    for (int i = 0; 1; i++) {
-        char symb = str[i];
-        if (symb == '\0') {
-            break;
-        }
+    int i = 0;
+    char symb = str[0];
+    while (symb != '\0') {
         
         bool is_symb_delim = false;
 
@@ -51,10 +49,21 @@ void tokensSplit(Tokens *tokens, const char *str, const char *delims) {
                 current_token_beggining_index = i;
             }
         }
+        
+
+        i++;
+        symb = str[i];
+    }
+
+    if (is_inside_of_word && tokens->arr != NULL) {
+        tokens->arr[tokens->num] = malloc((i - current_token_beggining_index + 1) * sizeof(char));
+        for (int j = current_token_beggining_index; j < i; j++) {
+            tokens->arr[tokens->num][j - current_token_beggining_index] = str[j];
+        }
+        tokens->arr[tokens->num][i - current_token_beggining_index] = '\0';
     }
 
     tokens->num++;
-
 }
 
 void tokensFree(Tokens *tokens) {
@@ -75,7 +84,7 @@ int main() {
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 
-    char str[1000000];
+    char str[1000001];
     fscanf(stdin, "%s", str);
     char delims[5] = ".,;:\0";
     Tokens tokens;
