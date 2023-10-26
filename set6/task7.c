@@ -79,6 +79,7 @@ int main() {
                 case 0: {
                     free(erace(arr[index]));
 
+
                     break;
                 }
                 case 1: {

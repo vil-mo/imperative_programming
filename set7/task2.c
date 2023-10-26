@@ -9,9 +9,8 @@ int bitwordIdxToArrIdx(int idx) {
     return idx / (bitword_size);
 }
 
-bitword bits[sizeof(bitword) * 8];
 bitword bitInArrElem(int idx) {
-    return bits[idx % (bitword_size)];
+    return 1 << idx;
 }
 
 //инициализирует массив битов длины num, устанавливая все его биты в ноль
@@ -46,6 +45,9 @@ int bitsetAny ( const bitword * arr , int left , int right ) {
     int leftIdx = bitwordIdxToArrIdx(left);
     int rightIdx = bitwordIdxToArrIdx(right);
     
+
+    
+
 
     if (leftIdx == rightIdx) {
         for (int currElem = left % bitword_size; currElem < right % bitword_size; currElem++) {
@@ -86,9 +88,6 @@ int bitsetAny ( const bitword * arr , int left , int right ) {
 
 
 int main() {
-    for (int i = 0; i < bitword_size; i++) {
-        bits[i] = pow(2, i);
-    }
 
     int n;
     scanf("%d", &n);

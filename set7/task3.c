@@ -5,14 +5,8 @@ void bitwiseXOR(double *result, double *x_doub, uint64_t *y_long) {
     uint64_t x = *((uint64_t *) x_doub);
     uint64_t y = *y_long;
 
-    uint64_t z = ~(x & y) & ~(~x & ~y);
-    //        a        b
-    // x y  x & y   ~x & ~y   ~a & ~b
-    // 0 0    0        1         0
-    // 0 1    0        0         1
-    // 1 0    0        0         1
-    // 1 1    1        0         0
-
+    uint64_t z = x ^ y;
+    
     *result = *((double *) &z);
 }
 

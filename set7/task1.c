@@ -1,30 +1,91 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-typedef struct Node_s {
+typedef struct Node_s
+{
     char val[8];
     int key;
 } Node;
 
-int nodeCmpFn(const Node *arg1, const Node *arg2) {
-    return arg1->key - arg2->key;
+void swap(Node *a, Node *b)
+{
+    Node v = *a;
+    *a = *b;
+    *b = v;
 }
 
+void _quicksort(Node *arr, int low, int high)
+{
+    if (low >= high) {
+        return;
+    }
 
-int main() {
+    int secondpoint = -1;
+    for (int m = low; m < high; m = secondpoint + 1)
+    {
+        int currSecondpoint = secondpoint;
+        int secondpoint_set = 0;
+        int flag = 1;
+        for (int i = m; i < high; i++)
+        {
+            if (arr[i].key > arr[high].key)
+            {
+                secondpoint = i;
+                secondpoint_set = 1;
+                for (int j = i + 1; j < high; j++)
+                {
+                    if (arr[j].key < arr[high].key)
+                    {
+                        swap(&arr[j], &arr[secondpoint]);
+                        flag = 0;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        if (flag)
+        {
+            if (!secondpoint_set)
+            {
+                secondpoint = currSecondpoint;
+            }
+            break;
+        }
+    }
+
+    if (secondpoint >= 0)
+    {
+        swap(&arr[high], &arr[secondpoint]);
+        _quicksort(arr, low, secondpoint - 1);
+        _quicksort(arr, secondpoint + 1, high);   
+    } else {
+        _quicksort(arr, low, high - 1);
+    }
+
+}
+
+void quicksort(Node *arr, int len)
+{
+    _quicksort(arr, 0, len - 1);
+}
+
+int main()
+{
     int n;
     scanf("%d", &n);
 
     Node arr[n];
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         scanf("%d %s", &arr[i].key, &arr[i].val);
     }
 
-    qsort(arr, n, sizeof(Node), &nodeCmpFn);
+    quicksort(arr, n);
 
-    for (int i = 0; i < n; i++) {
-        printf("%d %s\n", arr[i].key, arr[i].val);    
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d %s\n", arr[i].key, arr[i].val);
     }
 
     return 0;
