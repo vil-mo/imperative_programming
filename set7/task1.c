@@ -23,14 +23,12 @@ void _quicksort(Node *arr, int low, int high)
     for (int m = low; m < high; m = secondpoint + 1)
     {
         int currSecondpoint = secondpoint;
-        int secondpoint_set = 0;
         int flag = 1;
         for (int i = m; i < high; i++)
         {
             if (arr[i].key > arr[high].key)
             {
                 secondpoint = i;
-                secondpoint_set = 1;
                 for (int j = i + 1; j < high; j++)
                 {
                     if (arr[j].key < arr[high].key)
@@ -45,10 +43,6 @@ void _quicksort(Node *arr, int low, int high)
         }
         if (flag)
         {
-            if (!secondpoint_set)
-            {
-                secondpoint = currSecondpoint;
-            }
             break;
         }
     }
