@@ -11,10 +11,13 @@ int main() {
 
 
     long long x = arr[0], y = arr[1];
-    long long res = floor((x + y) / 2.0);
+
+    long long res;
+    res = 0xff00ffffffffffff;
+    int val = fwrite(&res, sizeof(int), 1, out);
 
 
-    fwrite(&res, sizeof(int), 1, out);
+    printf("%d", val);
 
     fclose(in);
     fclose(out);
