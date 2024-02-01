@@ -1,7 +1,5 @@
 #include <stdio.h>
 
-
-
 typedef struct Node_s {
     float val;
     int next;
@@ -20,9 +18,8 @@ int main() {
         scanf("%f %d", &arr[i].val, &arr[i].next);
     }
 
-    
     for (int i = f; i > -1; i = arr[i].next) {
-        
+
         printf("%0.3lf\n", arr[i].val);
     }
 

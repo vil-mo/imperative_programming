@@ -1,70 +1,69 @@
+#include <stdint.h>
 #include <stdio.h>
-#include <malloc.h>
- 
-// A utility function to get maximum
-// value in arr[]
-int getMax(int arr[], int n)
-{
-    int mx = arr[0];
-    for (int i = 1; i < n; i++)
-        if (arr[i] > mx)
-            mx = arr[i];
-    return mx;
-}
- 
-// A function to do counting sort of arr[]
-// according to the digit
-// represented by exp.
-void countSort(int arr[], int n, int exp)
-{
- 
-    // Output array
-    int output[n];
-    int i, count[10] = { 0 };
- 
-    // Store count of occurrences
-    // in count[]
-    for (i = 0; i < n; i++)
-        count[(arr[i] / exp) % 10]++;
- 
-    // Change count[i] so that count[i]
-    // now contains actual position
-    // of this digit in output[]
-    for (i = 1; i < 10; i++)
-        count[i] += count[i - 1];
- 
-    // Build the output array
-    for (i = n - 1; i >= 0; i--) {
-        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-        count[(arr[i] / exp) % 10]--;
+#include <stdlib.h>
+
+typedef struct Node_s {
+    uint8_t key[4];
+    uint32_t val;
+} Node;
+
+void sort_digit(Node *input, Node *output, uint32_t len, uint32_t digits_am[256], uint32_t digit) {
+    for (int i = 0; i < 256; i++) {
+        digits_am[i] = 0;
     }
- 
-    // Copy the output array to arr[],
-    // so that arr[] now contains sorted
-    // numbers according to current digit
-    for (i = 0; i < n; i++)
-        arr[i] = output[i];
+
+    for (int i = 0; i < len; i++) {
+        digits_am[input[i].key[digit]]++;
+    }
+
+    digits_am[0]--;
+    for (int i = 1; i < 256; i++) {
+        digits_am[i] += digits_am[i - 1];
+    }
+
+    for (int i = 0; i < len; i++) {
+        Node node = input[i];
+        output[digits_am[node.key[digit]]] = node;
+        digits_am[node.key[digit]]++;
+    }
 }
- 
-void radixsort(int arr[], int n)
-{
- 
-    // Find the maximum number to
-    // know number of digits
-    int m = getMax(arr, n);
- 
-    // Do counting sort for every digit.
-    // Note that instead of passing digit
-    // number, exp is passed. exp is 10^i
-    // where i is current digit number
-    for (int exp = 1; m / exp > 0; exp *= 10)
-        countSort(arr, n, exp);
+
+void radix_sort(Node *arr, uint32_t len) {
+    Node *arr2 = malloc(sizeof(Node) * len);
+    uint32_t digits_am[256];
+
+    sort_digit(arr, arr2, len, digits_am, 0);
+    sort_digit(arr2, arr, len, digits_am, 1);
+    sort_digit(arr, arr2, len, digits_am, 2);
+    sort_digit(arr2, arr, len, digits_am, 3);
+
+    free(arr2);
 }
- 
 
 int main() {
+    FILE *in = fopen("input.txt", "rb");
+    FILE *out = fopen("output.txt", "wb");
 
+    uint32_t n;
+    fread(&n, sizeof(uint32_t), 1, in);
 
+    Node *arr = malloc(n * sizeof(Node));
+
+    for (int i = 0; i < n; i++) {
+        fread(&arr[i].key, sizeof(uint8_t), 4, in);
+        fread(&arr[i].val, sizeof(uint32_t), 1, in);
+    }
+
+    radix_sort(arr, n);
+
+    for (int i = 0; i < n; i++) {
+        fwrite(&arr[i].key, sizeof(uint8_t), 4, out);
+        fwrite(&arr[i].val, sizeof(uint32_t), 1, out);
+    }
+
+    free(arr);
+    fclose(in);
+    fclose(out);
 
     return 0;
 }

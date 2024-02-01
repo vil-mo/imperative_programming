@@ -21,6 +21,13 @@ void addLongNums(LongNum a, LongNum b, LongNum *result) {
         if (result->len < a.len) {
             num += a.arr[result->len];
         }
+
+    int aoeue = 3;
+
+
+
+        int * uaoe = &aoeue;
+
         if (result->len < b.len) {
             num += b.arr[result->len];
         }

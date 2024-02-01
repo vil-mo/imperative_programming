@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdbool.h>
 #include <malloc.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 typedef struct Tokens_s {
     int num;
@@ -15,7 +15,7 @@ void tokensSplit(Tokens *tokens, const char *str, const char *delims) {
     int i = 0;
     char symb = str[0];
     while (symb != '\0') {
-        
+
         bool is_symb_delim = false;
 
         for (int j = 0;; j++) {
@@ -35,11 +35,15 @@ void tokensSplit(Tokens *tokens, const char *str, const char *delims) {
                 is_inside_of_word = false;
 
                 if (tokens->arr != NULL) {
-                    tokens->arr[tokens->num] = malloc((i - current_token_beggining_index + 1) * sizeof(char));
+                    tokens->arr[tokens->num] = malloc(
+                        (i - current_token_beggining_index + 1) * sizeof(char));
                     for (int j = current_token_beggining_index; j < i; j++) {
-                        tokens->arr[tokens->num][j - current_token_beggining_index] = str[j];
+                        tokens->arr[tokens->num]
+                                   [j - current_token_beggining_index] = str[j];
                     }
-                    tokens->arr[tokens->num][i - current_token_beggining_index] = '\0';
+                    tokens
+                        ->arr[tokens->num][i - current_token_beggining_index] =
+                        '\0';
                 }
             }
         } else {
@@ -49,16 +53,18 @@ void tokensSplit(Tokens *tokens, const char *str, const char *delims) {
                 current_token_beggining_index = i;
             }
         }
-        
 
         i++;
         symb = str[i];
     }
 
+    int m;
     if (is_inside_of_word && tokens->arr != NULL) {
-        tokens->arr[tokens->num] = malloc((i - current_token_beggining_index + 1) * sizeof(char));
+        tokens->arr[tokens->num] =
+            malloc((i - current_token_beggining_index + 1) * sizeof(char));
         for (int j = current_token_beggining_index; j < i; j++) {
-            tokens->arr[tokens->num][j - current_token_beggining_index] = str[j];
+            tokens->arr[tokens->num][j - current_token_beggining_index] =
+                str[j];
         }
         tokens->arr[tokens->num][i - current_token_beggining_index] = '\0';
     }
@@ -79,7 +85,6 @@ void tokensFree(Tokens *tokens) {
     tokens->arr = NULL;
 }
 
-
 int main() {
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
@@ -91,7 +96,7 @@ int main() {
     tokens.arr = NULL;
 
     tokensSplit(&tokens, str, delims);
-    tokens.arr = malloc(tokens.num * sizeof(char*));
+    tokens.arr = malloc(tokens.num * sizeof(char *));
     tokensSplit(&tokens, str, delims);
 
     printf("%d\n", tokens.num);
