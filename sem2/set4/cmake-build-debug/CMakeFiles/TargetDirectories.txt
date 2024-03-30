@@ -1,0 +1,4 @@
+/home/vilmo/Documents/lrn/c/sem2/set4/cmake-build-debug/CMakeFiles/task1.dir
+/home/vilmo/Documents/lrn/c/sem2/set4/cmake-build-debug/CMakeFiles/task2.dir
+/home/vilmo/Documents/lrn/c/sem2/set4/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/vilmo/Documents/lrn/c/sem2/set4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
